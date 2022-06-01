@@ -11,19 +11,20 @@
     src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
     crossorigin
   ></script>
+  <script src="https://unpkg.com/prop-types@15.8.1/prop-types.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    function Btn({ text, onClick }) {
+    function Btn({ text, fontSize = 30 }) {
       console.log(text, "was rendered");
       return (
         <button
-          onClick={onClick}
           style={{
             backgroundColor: "tomato",
             color: "white",
             padding: "10px 20px",
             border: 0,
             borderRadius: 10,
+            fontSize,
           }}
         >
           {text}
@@ -31,14 +32,17 @@
       );
     }
 
-    const MemorizedBtn = React.memo(Btn);
+    Btn.propTypes = {
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.number,
+    };
     function App() {
       const [value, setValue] = React.useState("Save Changes");
       const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          <MemorizedBtn text={value} onClick={changeValue} />
-          <MemorizedBtn text="Continue" />
+          <Btn text={value} fontSize={18} />
+          <Btn text={"Continue"} />
         </div>
       );
     }
